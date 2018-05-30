@@ -284,10 +284,6 @@ dependencies {
 
     compile 'org.jgrapht:jgrapht-core:0.9.1'
 
-    compile('org.seqdoop:hadoop-bam:' + hadoopBamVersion) {
-        exclude group: 'org.apache.hadoop'
-        exclude module: 'htsjdk'
-    }
     compile files('lib/disq-0.0.1-SNAPSHOT.jar')
     compile('org.apache.hadoop:hadoop-client:' + hadoopVersion) // should be a 'provided' dependency
     compile('com.github.jsr203hadoop:jsr203hadoop:1.0.3')
