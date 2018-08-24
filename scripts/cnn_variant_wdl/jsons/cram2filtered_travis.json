@@ -9,7 +9,7 @@
   "Cram2FilteredVcf.info_key": "CNN_2D",
   "Cram2FilteredVcf.tranches": "--snp-tranche 99.9 --indel-tranche 99.0",
   "Cram2FilteredVcf.tensor_type":"read_tensor",
-  "Cram2FilteredVcf.calling_intervals": "/home/travis/build/broadinstitute/gatk/src/test/resources/wgs_calling_regions.v1.interval_list",
+  "Cram2FilteredVcf.calling_intervals": "/home/travis/build/broadinstitute/gatk/src/test/resources/large/VQSR/contig20_1m_10m.interval_list",
   "Cram2FilteredVcf.gatk_docker": "__GATK_DOCKER__",
   "Cram2FilteredVcf.preemptible_attempts": 0,
   "Cram2FilteredVcf.inference_batch_size": 2,
