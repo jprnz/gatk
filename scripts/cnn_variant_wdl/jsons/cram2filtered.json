@@ -1,5 +1,5 @@
 {
-  "Cram2FilteredVcf.input_file": "gs://gatk-test-data/wgs_cram/NA12878_20k_hg38/NA12878.cram",
+    "Cram2FilteredVcf.input_file": "gs://gatk-test-data/wgs_cram/NA12878_20k_hg38/NA12878.cram",
   "Cram2FilteredVcf.reference_fasta": "gs://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
   "Cram2FilteredVcf.reference_dict": "gs://broad-references/hg38/v0/Homo_sapiens_assembly38.dict",
   "Cram2FilteredVcf.reference_fasta_index": "gs://broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",

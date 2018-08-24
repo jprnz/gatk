@@ -207,7 +207,7 @@ command <<<
 }
 
 task RunHC4 {
-    String input_bam
+    File input_bam
     File input_bam_index
     File reference_fasta
     File reference_dict
@@ -263,13 +263,13 @@ task RunHC4 {
 }
 
 task CNNScoreVariants {
-    String input_vcf
+    File input_vcf
     File input_vcf_index
     File reference_fasta
     File reference_dict
     File reference_fasta_index
-    String? bam_file
-    String? bam_file_index
+    File? bam_file
+    File? bam_file_index
     File? architecture_json
     File? architecture_hd5
     String? tensor_type
@@ -334,7 +334,7 @@ command <<<
 
 
 task FilterVariantTranches {
-    String input_vcf
+    File input_vcf
     File input_vcf_index
     File resource_fofn
     File resource_fofn_index
