@@ -451,17 +451,16 @@ task MergeVCFs {
     String gatk_docker
     Int? mem
     Int? preemptible_attempts
-    Float disk_space_gb
+    Int? disk_space_gb
     Int? cpu
 
     String output_vcf = "${output_prefix}_cnn_scored.vcf.gz"
 
+    Int default_disk_space_gb = 100
     # Mem is in units of GB but our command and memory runtime values are in MB
     Int machine_mem = if defined(mem) then mem * 1000 else 3500
     Int command_mem = machine_mem - 1000
 
-    # using MergeVcfs instead of GatherVcfs so we can create indices
-    # WARNING 2015-10-28 15:01:48 GatherVcfs  Index creation not currently supported when gathering block compressed VCFs.
     command {
         set -e
         export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_override}
@@ -472,7 +471,7 @@ task MergeVCFs {
     runtime {
         docker: "${gatk_docker}"
         memory: machine_mem + " MB"
-        disks: "local-disk " + sub(disk_space_gb, "\\..*", "") + " HDD"
+        disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " HDD"
         preemptible: select_first([preemptible_attempts, 10])
         cpu: select_first([cpu, 1])
         bootDiskSizeGb: "16"
