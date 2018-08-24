@@ -1,4 +1,4 @@
-# CRAM to filtered VCF WDL
+# CRAM to trained CNNVariant Model
 workflow Cram2TrainedModel {
     File input_cram
     File reference_fasta
@@ -46,7 +46,6 @@ workflow Cram2TrainedModel {
     }
 
     scatter (calling_interval in SplitIntervals.interval_files) {
-
         call RunHC4 {
             input:
                 input_bam = CramToBam.output_bam,
@@ -93,7 +92,6 @@ workflow Cram2TrainedModel {
             gatk_docker = gatk_docker,
             preemptible_attempts = preemptible_attempts,
             disk_space = disk_space_gb
-
     }
 
     call SamtoolsMergeBAMs {

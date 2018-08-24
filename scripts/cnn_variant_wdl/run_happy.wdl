@@ -65,11 +65,10 @@ task RunHappy {
     Int? preemptible_attempts
     Int? disk_space
     Int? cpu
-    Boolean use_ssd = true
+    Boolean use_ssd = false
 
     # You may have to change the following two parameter values depending on the task requirements
     Int default_ram_mb = 16000
-    # WARNING: In the workflow, you should calculate the disk space as an input to this task (disk_space_gb).
     Int default_disk_space_gb = 100
 
     # Mem is in units of GB but our command and memory runtime values are in MB
@@ -111,11 +110,10 @@ task RunHappyPlots {
     Int? preemptible_attempts
     Int? disk_space
     Int? cpu
-    Boolean use_ssd = true
+    Boolean use_ssd = false
 
     # You may have to change the following two parameter values depending on the task requirements
     Int default_ram_mb = 16000
-    # WARNING: In the workflow, you should calculate the disk space as an input to this task (disk_space_gb).
     Int default_disk_space_gb = 100
 
     # Mem is in units of GB but our command and memory runtime values are in MB
