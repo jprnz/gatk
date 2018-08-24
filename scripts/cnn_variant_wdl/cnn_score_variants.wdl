@@ -209,7 +209,7 @@ task SplitIntervals {
             -R ${ref_fasta} \
             ${"-L " + intervals} \
             -scatter ${scatter_count} \
-            -O interval-files \
+            -O ./ \
             ${split_intervals_extra_args}
     }
 
