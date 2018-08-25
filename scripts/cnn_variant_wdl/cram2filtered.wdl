@@ -349,7 +349,7 @@ task FilterVariantTranches {
     Int? mem_gb
     String gatk_docker
     Int? preemptible_attempts
-    Float disk_space_gb
+    Int? disk_space_gb
     Int? cpu
 
     String output_vcf = "${output_prefix}_filtered.vcf.gz"
