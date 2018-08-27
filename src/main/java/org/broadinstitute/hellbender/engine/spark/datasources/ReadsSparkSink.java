@@ -26,8 +26,7 @@ import org.broadinstitute.hellbender.utils.read.GATKReadToBDGAlignmentRecordConv
 import org.broadinstitute.hellbender.utils.read.HeaderlessSAMRecordCoordinateComparator;
 import org.broadinstitute.hellbender.utils.read.ReadsWriteFormat;
 import org.broadinstitute.hellbender.utils.spark.SparkUtils;
-import org.disq_bio.disq.HtsjdkReadsRdd;
-import org.disq_bio.disq.HtsjdkReadsRddStorage;
+import org.disq_bio.disq.*;
 import scala.Tuple2;
 
 import java.io.IOException;
@@ -86,9 +85,9 @@ public final class ReadsSparkSink {
         final JavaRDD<SAMRecord> samReads = reads.map(read -> read.convertToSAMRecord(null));
 
         if (format == ReadsWriteFormat.SINGLE) {
-            HtsjdkReadsRddStorage.FileCardinalityWriteOption fileCardinalityWriteOption = HtsjdkReadsRddStorage.FileCardinalityWriteOption.SINGLE;
+            FileCardinalityWriteOption fileCardinalityWriteOption = FileCardinalityWriteOption.SINGLE;
             final String outputPartsDirectory = (outputPartsDir == null)? getDefaultPartsDirectory(outputFile)  : outputPartsDir;
-            HtsjdkReadsRddStorage.TempPartsDirectoryWriteOption tempPartsDirectoryWriteOption = new HtsjdkReadsRddStorage.TempPartsDirectoryWriteOption(outputPartsDirectory);
+            TempPartsDirectoryWriteOption tempPartsDirectoryWriteOption = new TempPartsDirectoryWriteOption(outputPartsDirectory);
             if (absoluteOutputFile.endsWith(BamFileIoUtils.BAM_FILE_EXTENSION) ||
                     absoluteOutputFile.endsWith(CramIO.CRAM_FILE_EXTENSION) ||
                     absoluteOutputFile.endsWith(IOUtil.SAM_FILE_EXTENSION)) {
@@ -96,15 +95,15 @@ public final class ReadsSparkSink {
                 writeReads(ctx, absoluteOutputFile, absoluteReferenceFile, samReads, header, numReducers, fileCardinalityWriteOption, tempPartsDirectoryWriteOption);
             } else {
                 // default to BAM
-                HtsjdkReadsRddStorage.FormatWriteOption formatWriteOption = HtsjdkReadsRddStorage.FormatWriteOption.BAM;
+                ReadsFormatWriteOption formatWriteOption = ReadsFormatWriteOption.BAM;
                 writeReads(ctx, absoluteOutputFile, absoluteReferenceFile, samReads, header, numReducers, formatWriteOption, fileCardinalityWriteOption, tempPartsDirectoryWriteOption);
             }
         } else if (format == ReadsWriteFormat.SHARDED) {
             if (outputPartsDir!=null) {
                 throw new  GATKException(String.format("You specified the bam output parts directory %s, but requested a sharded output format which does not use this option",outputPartsDir));
             }
-            HtsjdkReadsRddStorage.FormatWriteOption formatWriteOption = HtsjdkReadsRddStorage.FormatWriteOption.BAM; // use BAM if output file is a directory
-            HtsjdkReadsRddStorage.FileCardinalityWriteOption fileCardinalityWriteOption = HtsjdkReadsRddStorage.FileCardinalityWriteOption.MULTIPLE;
+            ReadsFormatWriteOption formatWriteOption = ReadsFormatWriteOption.BAM; // use BAM if output file is a directory
+            FileCardinalityWriteOption fileCardinalityWriteOption = FileCardinalityWriteOption.MULTIPLE;
             writeReads(ctx, absoluteOutputFile, absoluteReferenceFile, samReads, header, numReducers, formatWriteOption, fileCardinalityWriteOption);
         } else if (format == ReadsWriteFormat.ADAM) {
             if (outputPartsDir!=null) {
@@ -116,7 +115,7 @@ public final class ReadsSparkSink {
 
     private static void writeReads(
             final JavaSparkContext ctx, final String outputFile, final String referenceFile, final JavaRDD<SAMRecord> reads,
-            final SAMFileHeader header, final int numReducers, final HtsjdkReadsRddStorage.WriteOption... writeOptions) throws IOException {
+            final SAMFileHeader header, final int numReducers, final WriteOption... writeOptions) throws IOException {
 
         final JavaRDD<SAMRecord> sortedReads = sortSamRecordsToMatchHeader(reads, header, numReducers);
         Broadcast<SAMFileHeader> headerBroadcast = ctx.broadcast(header);
