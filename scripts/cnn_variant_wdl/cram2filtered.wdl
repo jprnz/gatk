@@ -354,8 +354,8 @@ task FilterVariantTranches {
 
     String output_vcf = "${output_prefix}_filtered.vcf.gz"
 
-    # You may have to change the following two parameter values depending on the task requirements
     Int default_ram_mb = 16000
+    Int default_disk_space_gb = 40
 
     # Mem is in units of GB but our command and memory runtime values are in MB
     Int machine_mem = if defined(mem_gb) then mem_gb *1000 else default_ram_mb
@@ -378,7 +378,7 @@ command <<<
     docker: "${gatk_docker}"
     memory: machine_mem + " MB"
     # Note that the space before SSD and HDD should be included.
-    disks: "local-disk " + sub(disk_space_gb, "\\..*", "") + " HDD"
+    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " HDD"
     preemptible: select_first([preemptible_attempts, 3])
     cpu: select_first([cpu, 1])
     bootDiskSizeGb: "16"
